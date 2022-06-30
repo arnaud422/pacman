@@ -7,21 +7,22 @@ GAME.height = innerHeight;
 
 // js variable
 const MAP = [
-  ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
-  ["-", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "-"],
-  ["-", "•", "-", "-", "-", "-", "•", "•", "•", "-", "-", "-", "•", "•", "•", "•", "-", "-", "-", "•", "•", "•", "-", "-", "-", "-", "•", "-"],
-  ["-", "•", "-", "•", "•", "-", "•", "•", "•", "-", "•", "•", "-", "•", "•", "•", "-", "•", "•", "-", "•", "•", "-", "•", "•", "•", "•", "-"],
-  ["-", "•", "-", "•", "•", "-", "•", "-", "•", "-", "•", "•", "•", "-", "•", "•", "-", "•", "•", "-", "•", "•", "-", "•", "•", "•", "•", "-"],
-  ["-", "•", "-", "-", "-", "-", "•", "-", "•", "-", "•", "•", "•", "-", "•", "•", "-", "-", "-", "•", "•", "•", "-", "-", "-", "-", "•", "-"],
-  ["-", "•", "-", "•", "•", "-", "•", "-", "•", "-", "•", "•", "-", "•", "•", "•", "-", "•", "•", "-", "•", "•", "•", "•", "•", "-", "•", "-"],
-  ["-", "•", "-", "•", "•", "-", "•", "•", "•", "-", "-", "-", "•", "•", "•", "•", "-", "•", "•", "-", "•", "•", "-", "-", "-", "-", "•", "-"],
-  ["-", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "-"],
-  ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
-];
+    ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
+    ["-", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "-"],
+    ["-", "•", "-", "-", "-", "-", "•", "•", "•", "-", "-", "-", "•", "•", "•", "•", "-", "-", "-", "•", "•", "•", "-", "-", "-", "-", "•", "-"],
+    ["-", "•", "-", " ", " ", "-", "•", "•", "•", "-", " ", " ", "-", "•", "•", "•", "-", " ", " ", "-", "•", "•", "-", "•", "•", "•", "•", "-"],
+    ["-", "•", "-", " ", " ", "-", "•", "-", "•", "-", " ", " ", " ", "-", "•", "•", "-", " ", " ", "-", "•", "•", "-", "•", "•", "•", "•", "-"],
+    ["-", "•", "-", "-", "-", "-", "•", "-", "•", "-", " ", " ", " ", "-", "•", "•", "-", "-", "-", "•", "•", "•", "-", "-", "-", "-", "•", "-"],
+    ["-", "•", "-", "•", "•", "-", "•", "-", "•", "-", " ", " ", "-", "•", "•", "•", "-", "•", "•", "-", "•", "•", "•", "•", "•", "-", "•", "-"],
+    ["-", "•", "-", "•", "•", "-", "•", "•", "•", "-", "-", "-", "•", "•", "•", "•", "-", "•", "•", "-", "•", "•", "-", "-", "-", "-", "•", "-"],
+    ["-", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "•", "-"],
+    ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
+  ];
 
 // function start
 (() => {
   const walls = [];
+  const bonus = [];
 
   const player = new Player({
     position: {
@@ -48,6 +49,16 @@ const MAP = [
             })
           );
           break;
+        case "•":
+            bonus.push(
+                new Bonus({
+                    position:{
+                        x: j * Wall.width + Wall.width / 2,
+                        y: i * Wall.width + Wall.height / 2,
+                    }
+                })
+            )
+            break;
       }
     });
   });
@@ -58,9 +69,15 @@ const MAP = [
       wall.draw();
     });
   }
+  function bonnusDraw(){
+    bonus.forEach((point)=>{
+        point.draw()
+    })
+  }
 
-  //   show walls
+  //   show walls and bonus
   wallsDraw();
+  bonnusDraw();
 
   //show le player
   player.draw();
@@ -114,41 +131,44 @@ const MAP = [
 
     //one Mouvement
     if (KEYS.z && lastKey === "z") {
-        player.velocity.x = 0;
-        player.velocity.y = -3;
-      }
-      if (KEYS.s && lastKey === "s") {
-        player.velocity.x = 0;
-        player.velocity.y = 3;
-      }
-      if (KEYS.q && lastKey === "q") {
-        player.velocity.y = 0;
-        player.velocity.x = -3;
-      }
-      if (KEYS.d && lastKey === "d") {
-        player.velocity.y = 0;
-        player.velocity.x = 3;
-      }
+      player.velocity.x = 0;
+      player.velocity.y = -3;
+    }
+    if (KEYS.s && lastKey === "s") {
+      player.velocity.x = 0;
+      player.velocity.y = 3;
+    }
+    if (KEYS.q && lastKey === "q") {
+      player.velocity.y = 0;
+      player.velocity.x = -3;
+    }
+    if (KEYS.d && lastKey === "d") {
+      player.velocity.y = 0;
+      player.velocity.x = 3;
+    }
 
     walls.forEach((wall) => {
-        wall.draw();
-        if(
-            player.position.y - player.radius + player.velocity.y < wall.position.y + wall.height &&
-            player.position.y + player.radius + player.velocity.y > wall.position.y &&
-            player.position.x + player.radius + player.velocity.x > wall.position.x &&
-            player.position.x - player.radius + player.velocity.x < wall.position.x + wall.width
-        ){
-            console.log('coliding');
-            player.velocity.x = 0;
-            player.velocity.y = 0;
-        }
+      wall.draw();
+      if (
+        player.position.y - player.radius + player.velocity.y <
+          wall.position.y + wall.height &&
+        player.position.y + player.radius + player.velocity.y >
+          wall.position.y &&
+        player.position.x + player.radius + player.velocity.x >
+          wall.position.x &&
+        player.position.x - player.radius + player.velocity.x <
+          wall.position.x + wall.width
+      ) {
+        console.log("coliding");
+        player.velocity.x = 0;
+        player.velocity.y = 0;
+      }
     });
+    bonnusDraw()
 
     player.update();
     // player.velocity.x = 0;
     // player.velocity.y = 0;
-
-    
   }
 
   animate();
