@@ -7,11 +7,16 @@ GAME.height = innerHeight;
 
 // js variable
 const MAP = [
-  ["-", "-", "-", "-", "-", "-"],
-  ["-", " ", " ", " ", " ", "-"],
-  ["-", " ", "-", "-", " ", "-"],
-  ["-", " ", " ", " ", " ", "-"],
-  ["-", "-", "-", "-", "-", "-"],
+  ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
+  ["-", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "-"],
+  ["-", " ", "-", "-", "-", "-", " ", " ", " ", "-", "-", "-", " ", " ", " ", " ", "-", "-", "-", " ", " ", " ", "-", "-", "-", "-", " ", "-"],
+  ["-", " ", "-", " ", " ", "-", " ", " ", " ", "-", " ", " ", "-", " ", " ", " ", "-", " ", " ", "-", " ", " ", "-", " ", " ", " ", " ", "-"],
+  ["-", " ", "-", " ", " ", "-", " ", "-", " ", "-", " ", " ", " ", "-", " ", " ", "-", " ", " ", "-", " ", " ", "-", " ", " ", " ", " ", "-"],
+  ["-", " ", "-", "-", "-", "-", " ", "-", " ", "-", " ", " ", " ", "-", " ", " ", "-", "-", "-", " ", " ", " ", "-", "-", "-", "-", " ", "-"],
+  ["-", " ", "-", " ", " ", "-", " ", "-", " ", "-", " ", " ", "-", " ", " ", " ", "-", " ", " ", "-", " ", " ", " ", " ", " ", "-", " ", "-"],
+  ["-", " ", "-", " ", " ", "-", " ", " ", " ", "-", "-", "-", " ", " ", " ", " ", "-", " ", " ", "-", " ", " ", "-", "-", "-", "-", " ", "-"],
+  ["-", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "-"],
+  ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
 ];
 
 // function start
@@ -106,25 +111,45 @@ const MAP = [
     requestAnimationFrame(animate);
     KEYS = KEYS;
     ctx.clearRect(0, 0, GAME.width, GAME.height);
-    wallsDraw();
-
-    player.update();
-    player.velocity.x = 0;
-    player.velocity.y = 0;
 
     //one Mouvement
     if (KEYS.z && lastKey === "z") {
-      player.velocity.y = -2;
-    }
-    if (KEYS.s && lastKey === "s") {
-      player.velocity.y = 2;
-    }
-    if (KEYS.q && lastKey === "q") {
-      player.velocity.x = -2;
-    }
-    if (KEYS.d && lastKey === "d") {
-      player.velocity.x = 2;
-    }
+        player.velocity.x = 0;
+        player.velocity.y = -3;
+      }
+      if (KEYS.s && lastKey === "s") {
+        player.velocity.x = 0;
+        player.velocity.y = 3;
+      }
+      if (KEYS.q && lastKey === "q") {
+        player.velocity.y = 0;
+        player.velocity.x = -3;
+      }
+      if (KEYS.d && lastKey === "d") {
+        player.velocity.y = 0;
+        player.velocity.x = 3;
+      }
+
+    walls.forEach((wall) => {
+        wall.draw();
+        if(
+            player.position.y - player.radius + player.velocity.y < wall.position.y + wall.height &&
+            player.position.y + player.radius + player.velocity.y > wall.position.y &&
+            player.position.x + player.radius + player.velocity.x > wall.position.x &&
+            player.position.x - player.radius + player.velocity.x < wall.position.x + wall.width
+        ){
+            console.log('coliding');
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+        }
+    });
+
+    player.update();
+    // player.velocity.x = 0;
+    // player.velocity.y = 0;
+
+    
   }
+
   animate();
 })();

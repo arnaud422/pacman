@@ -1,12 +1,12 @@
 // Wall object
 class Wall {
-    static width = 40;
-    static height = 40;
+    static width = 20;
+    static height = 20;
   
     constructor({ position }) {
       this.position = position;
-      this.width = 40;
-      this.height = 40;
+      this.width = 20;
+      this.height = 20;
     }
   
     draw() {
@@ -20,7 +20,7 @@ class Wall {
     constructor({ position, velocity }) {
       this.position = position;
       this.velocity = velocity;
-      this.radius = 15;
+      this.radius = 9;
     }
   
     draw() {
