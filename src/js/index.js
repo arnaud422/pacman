@@ -70,8 +70,11 @@ const MAP = [
     });
   }
   function bonnusDraw(){
-    bonus.forEach((point)=>{
+    bonus.forEach((point, i)=>{
         point.draw()
+        if(Math.hypot(player.position.x - point.position.x, player.position.y - point.position.y) < player.radius){
+            bonus.splice(i, 1)
+        }
     })
   }
 
