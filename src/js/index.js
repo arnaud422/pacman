@@ -18,6 +18,7 @@ const MAP = [
 (() => {
   const walls = [];
 
+
   const player = new Player({
     position: {
       x: Wall.width + Wall.width / 2,
@@ -60,21 +61,43 @@ const MAP = [
   //show le player
   player.draw();
 
+  let lastKey = null;
+
   //key management
-  document.addEventListener("keyup", ({ key }) => {
-    console.log(key)
+  document.addEventListener("keydown", ({ key }) => {
     switch (key) {
-      case "z":
-        player.velocity.y += -5;
+      case "z" :
+        KEYS.z = true;
+        lastKey = "z";
         break;
       case "q":
-        player.velocity.x += -5;
+        KEYS.q = true;
+        lastKey = "q";
         break;
       case "s":
-        player.velocity.y += 5;
+        KEYS.s = true;
+        lastKey = "s";
         break;
       case "d":
-        player.velocity.x += 5;
+        KEYS.d = true;
+        lastKey = "d";
+        break;
+    }
+  });
+
+  document.addEventListener("keyup", ({key}) => {
+    switch (key) {
+      case "z":
+        KEYS.z = false;
+        break;
+      case "q":
+        KEYS.q = false;
+        break;
+      case "s":
+        KEYS.s = false;
+        break;
+      case "d":
+        KEYS.d = false;
         break;
     }
   });
@@ -82,9 +105,27 @@ const MAP = [
   //annimation
   function animate() {
     requestAnimationFrame(animate);
+    KEYS = KEYS
     ctx.clearRect(0, 0, GAME.width, GAME.height);
-    wallsDraw()
+    wallsDraw();
+
     player.update();
+    player.velocity.x = 0
+    player.velocity.y = 0
+    
+    console.log(KEYS)
+     if(KEYS.z && lastKey === "z"){
+        player.velocity.y = -2
+     }
+     if(KEYS.s && lastKey === "s"){
+        player.velocity.y = 2
+     }
+     if(KEYS.q && lastKey === "q"){
+        player.velocity.x = -2
+     }
+     if(KEYS.d && lastKey === "d"){
+        player.velocity.x = 2
+     }
   }
   animate();
 })();

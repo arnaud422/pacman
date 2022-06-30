@@ -37,3 +37,10 @@ class Wall {
       this.position.y += this.velocity.y;
     }
   }
+
+let KEYS = {
+  s:false,
+  z:false,
+  q:false,
+  d:false
+}
