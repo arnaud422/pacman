@@ -18,7 +18,6 @@ const MAP = [
 (() => {
   const walls = [];
 
-
   const player = new Player({
     position: {
       x: Wall.width + Wall.width / 2,
@@ -66,7 +65,7 @@ const MAP = [
   //key management
   document.addEventListener("keydown", ({ key }) => {
     switch (key) {
-      case "z" :
+      case "z":
         KEYS.z = true;
         lastKey = "z";
         break;
@@ -85,7 +84,7 @@ const MAP = [
     }
   });
 
-  document.addEventListener("keyup", ({key}) => {
+  document.addEventListener("keyup", ({ key }) => {
     switch (key) {
       case "z":
         KEYS.z = false;
@@ -105,27 +104,27 @@ const MAP = [
   //annimation
   function animate() {
     requestAnimationFrame(animate);
-    KEYS = KEYS
+    KEYS = KEYS;
     ctx.clearRect(0, 0, GAME.width, GAME.height);
     wallsDraw();
 
     player.update();
-    player.velocity.x = 0
-    player.velocity.y = 0
-    
-    console.log(KEYS)
-     if(KEYS.z && lastKey === "z"){
-        player.velocity.y = -2
-     }
-     if(KEYS.s && lastKey === "s"){
-        player.velocity.y = 2
-     }
-     if(KEYS.q && lastKey === "q"){
-        player.velocity.x = -2
-     }
-     if(KEYS.d && lastKey === "d"){
-        player.velocity.x = 2
-     }
+    player.velocity.x = 0;
+    player.velocity.y = 0;
+
+    //one Mouvement
+    if (KEYS.z && lastKey === "z") {
+      player.velocity.y = -2;
+    }
+    if (KEYS.s && lastKey === "s") {
+      player.velocity.y = 2;
+    }
+    if (KEYS.q && lastKey === "q") {
+      player.velocity.x = -2;
+    }
+    if (KEYS.d && lastKey === "d") {
+      player.velocity.x = 2;
+    }
   }
   animate();
 })();
